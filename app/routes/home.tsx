@@ -1,16 +1,936 @@
-import { Button } from "~/components/ui/button"
+import type { Route } from "./+types/home"
+import { useLoaderData } from "react-router"
+import { getLanguage, translator } from "~/lib/i18n"
+import { useEffect, useId, useRef, useState } from "react"
+import {
+  ArrowLeft,
+  ArrowDown,
+  ArrowRight,
+  BookOpen,
+  Check,
+  Download,
+  Camera,
+  Plus,
+  X,
+} from "lucide-react"
 
-export default function Home() {
+const assetBase =
+  "https://cdn.wdgtsrc.com/408ca0ccc19412119d2bbc6f7b83f91e8400634/resize_landing/"
+const portrait = `${assetBase}1718664571385_jpg/source.webp`
+const previews = [1, 2, 3].map(
+  (n) => `${assetBase}${encodeURIComponent(`крок ${n}_jpg`)}/source.webp`
+)
+const payment = "https://secure.wayforpay.com/button/"
+const offers = [
+  {
+    name: "STANDARD",
+    price: 11,
+    note: "Читати й відчувати підтримку",
+    link: "bafabfb75b10c",
+    features: [
+      "Книжка у форматі PDF",
+      "Закрита група підтримки",
+      "Запитання за матеріалами книжки",
+    ],
+  },
+  {
+    name: "PREMIUM",
+    price: 31,
+    note: "Додати особистий зворотний зв’язок",
+    link: "b4a5157e0632f",
+    features: [
+      "Усе з пакета STANDARD",
+      "Одна індивідуальна онлайн-зустріч",
+      "Допомога зі створенням або доопрацюванням самопрезентації",
+    ],
+  },
+  {
+    name: "VIP",
+    price: 51,
+    note: "Більше простору для особистої роботи",
+    link: "b89264964793d",
+    features: [
+      "Книжка PDF, група та запитання",
+      "Дві індивідуальні зустрічі",
+      "Допомога із самопрезентацією",
+      "Розбір арттерапевтичної практики",
+      "Підтримка зі складними переживаннями під час читання",
+    ],
+  },
+]
+const questions = [
+  {
+    q: "Це паперова чи електронна книжка?",
+    a: "Це електронна книжка-практикум українською мовою: 48 сторінок у форматі PDF. Її можна читати на телефоні, планшеті або комп’ютері. Для письмової роботи можна роздрукувати потрібні сторінки.",
+  },
+  {
+    q: "Як я отримаю книжку після оплати?",
+    a: "PDF доступний автоматично одразу після успішної оплати через WayForPay. Доставка фізичного примірника не потрібна.",
+  },
+  {
+    q: "Чи потрібен досвід публічних виступів?",
+    a: "Ні. Практикум підійде, якщо ви лише починаєте розповідати про свою справу або хочете по-новому сформулювати вже знайому самопрезентацію. Рухайтеся у власному темпі й повертайтеся до вправ за потреби.",
+  },
+  {
+    q: "Чи достатньо самої книжки без підтримки?",
+    a: "Так. PDF — самостійний завершений продукт для роботи над самопрезентацією. Група та індивідуальні зустрічі входять лише до відповідних пакетів і є додатковим форматом підтримки.",
+  },
+  {
+    q: "Який пакет обрати?",
+    a: "Оберіть PDF за 5 €, якщо хочете працювати самостійно. STANDARD додає групу та можливість ставити запитання. PREMIUM — одну індивідуальну онлайн-зустріч, VIP — дві зустрічі та розбір арттерапевтичної практики. Деталі підтримки можна уточнити в авторки через Instagram.",
+  },
+]
+export function loader({ request }: { request: Request }) {
+  return { language: getLanguage(request) }
+}
+export function meta({ loaderData }: Route.MetaArgs) {
+  const en = loaderData?.language === "en"
+  return [
+    {
+      title: en
+        ? "A Confident Self-Introduction in 5 Steps — Anna Voronova"
+        : "Впевнена самопрезентація за 5 кроків — Анна Воронова",
+    },
+    {
+      name: "description",
+      content: en
+        ? "Anna Voronova’s 48-page Ukrainian workbook. Create your self-introduction in five steps. PDF for €5 with optional support packages."
+        : "48-сторінкова книжка-практикум Анни Воронової. Створіть власну самопрезентацію за 5 кроків. PDF українською за 5 € та додаткові формати підтримки.",
+    },
+  ]
+}
+function FaqItem({ question, answer }: { question: string; answer: string }) {
+  const [open, setOpen] = useState(false)
+  const id = useId()
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
+    <div className={`faq-item ${open ? "is-open" : ""}`}>
+      <h3>
+        <button
+          id={`${id}-button`}
+          aria-expanded={open}
+          aria-controls={id}
+          onClick={() => setOpen(!open)}
+        >
+          {question}
+          <Plus size={18} aria-hidden="true" />
+        </button>
+      </h3>
+      <div
+        id={id}
+        className="faq-answer"
+        role="region"
+        aria-labelledby={`${id}-button`}
+        inert={!open}
+      >
         <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
+          <p>{answer}</p>
         </div>
       </div>
     </div>
+  )
+}
+export default function Home() {
+  const { language } = useLoaderData<typeof loader>()
+  const t = translator(language)
+  const [preview, setPreview] = useState<number | null>(null)
+  const isPreviewOpen = preview !== null
+  const [direction, setDirection] = useState("next")
+  const touchStart = useRef<{ x: number; y: number } | null>(null)
+  const heroTouchStart = useRef<{ x: number; y: number } | null>(null)
+  const heroSwiped = useRef(false)
+  const mainRef = useRef<HTMLElement>(null)
+  const [tabletPage, setTabletPage] = useState(0)
+  const [heroPage, setHeroPage] = useState(0)
+  const [heroDirection, setHeroDirection] = useState("next")
+  const turnPage = (delta: number) => {
+    setDirection(delta > 0 ? "next" : "previous")
+    setPreview((page) =>
+      page === null ? null : (page + delta + previews.length) % previews.length
+    )
+  }
+  const turnHeroPage = (delta: number) => {
+    setHeroDirection(delta > 0 ? "next" : "previous")
+    setHeroPage((page) => (page + delta + previews.length) % previews.length)
+  }
+  const openPreview = (index: number, trigger: HTMLButtonElement) => {
+    triggerRef.current = trigger
+    setDirection("next")
+    setPreview(index)
+  }
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)")
+    const elements = mainRef.current?.querySelectorAll(
+      ".section-intro, .situation-grid article, .inside-heading, .preview-card, .author-portrait, .author-copy, .main-offer, .support-heading, .support-offer, .faq-section, .tablet-copy, .tablet-showcase, .closing-band .section-wrap"
+    )
+    if (!elements || !("IntersectionObserver" in window)) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("revealed")
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.12 }
+    )
+    const revealAll = () =>
+      elements.forEach((element) => element.classList.add("revealed"))
+    if (!media.matches)
+      elements.forEach((element, index) => {
+        // Never hide content already visible on first render.
+        if (element.getBoundingClientRect().top >= window.innerHeight) {
+          element.classList.add("scroll-reveal")
+          if (
+            element.matches(
+              ".preview-card, .support-offer, .situation-grid article"
+            )
+          ) {
+            ;(element as HTMLElement).style.setProperty(
+              "--reveal-delay",
+              `${(index % 3) * 65}ms`
+            )
+          }
+          observer.observe(element)
+        }
+      })
+    media.addEventListener("change", revealAll)
+    return () => {
+      observer.disconnect()
+      revealAll()
+      media.removeEventListener("change", revealAll)
+    }
+  }, [language])
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const triggerRef = useRef<HTMLButtonElement | null>(null)
+  useEffect(() => {
+    const dialog = dialogRef.current
+    if (isPreviewOpen) {
+      dialog?.showModal()
+      const old = document.body.style.overflow
+      document.body.style.overflow = "hidden"
+      return () => {
+        document.body.style.overflow = old
+        dialog?.close()
+        triggerRef.current?.focus()
+      }
+    }
+  }, [isPreviewOpen])
+  return (
+    <>
+      <a className="skip-link" href="#main">
+        {t("Перейти до змісту")}
+      </a>
+      <header className="site-header">
+        <a
+          className="brand"
+          href="#"
+          aria-label={t("Анна Воронова — на початок")}
+        >
+          <BookOpen size={26} strokeWidth={1.5} />
+          <span>
+            {t("анна воронова")}
+            <span className="brand-star" aria-hidden="true">
+              ✳
+            </span>
+          </span>
+        </a>
+        <nav aria-label={t("Основна навігація")}>
+          <a href="#inside">{t("Про книжку")}</a>
+          <a href="#author">{t("Про авторку")}</a>
+        </nav>
+        <div className="header-actions">
+          <a className="pill header-cta" href="#buy">
+            {t("Отримати книжку")}
+            <ArrowRight size={15} />
+          </a>
+        </div>
+      </header>
+      <main id="main" ref={mainRef}>
+        <section className="hero section-wrap">
+          <div className="hero-copy">
+            <p className="eyebrow">
+              <span /> {t("КНИЖКА-ПРАКТИКУМ · УКРАЇНСЬКОЮ")}
+            </p>
+            <h1>
+              <span className="hero-line">{t("ваша історія.")}</span>
+              <span className="hero-line">{t("ваш голос.")}</span>
+              <span className="hero-line">
+                <span className="underline-mark">{t("ваша впевненість.")}</span>
+              </span>
+            </h1>
+            <p className="hero-description">
+              {t(
+                "Розкажіть про себе та свою справу так, щоб вас почули. Створіть власну самопрезентацію за 5 кроків — без чужих сценаріїв, своїми словами."
+              )}
+            </p>
+            <div className="hero-actions">
+              <a className="pill" href={`${payment}bde00061852d1`}>
+                {t("Отримати PDF за 5 €")}
+                <ArrowRight size={17} />
+              </a>
+              <a className="text-link" href="#inside">
+                {t("Зазирнути всередину")}
+                <ArrowDown size={14} />
+              </a>
+            </div>
+            <p className="delivery-note">
+              <Download size={13} />{" "}
+              {t("48 сторінок · PDF одразу після оплати")}
+            </p>
+          </div>
+          <div className="hero-visual">
+            <span className="handwritten cover-caption">
+              гортайте свій практикум ↴
+            </span>
+            <span className="outline-star" aria-hidden="true">
+              ✳
+            </span>
+            <div className="hero-tablet-scene">
+              <div className="hero-tablet-device">
+                <span className="hero-tablet-camera" aria-hidden="true" />
+                <div className="hero-tablet-screen">
+                  <div className="hero-tablet-app-bar">
+                    <BookOpen size={14} />
+                    <span>ваш практикум</span>
+                    <span>PDF</span>
+                  </div>
+                  <button
+                    className="hero-tablet-page"
+                    onPointerDown={(e) => {
+                      if (e.pointerType === "mouse" && e.button !== 0) return
+                      heroSwiped.current = false
+                      heroTouchStart.current = {
+                        x: e.clientX,
+                        y: e.clientY,
+                      }
+                    }}
+                    onPointerUp={(e) => {
+                      const start = heroTouchStart.current
+                      heroTouchStart.current = null
+                      if (!start) return
+                      const dx = e.clientX - start.x
+                      const dy = e.clientY - start.y
+                      if (
+                        Math.abs(dx) > 42 &&
+                        Math.abs(dx) > Math.abs(dy) * 1.35
+                      ) {
+                        heroSwiped.current = true
+                        turnHeroPage(dx < 0 ? 1 : -1)
+                      }
+                    }}
+                    onPointerCancel={() => {
+                      heroTouchStart.current = null
+                    }}
+                    onClick={(e) => {
+                      if (heroSwiped.current) {
+                        heroSwiped.current = false
+                        e.preventDefault()
+                        return
+                      }
+                      openPreview(heroPage, e.currentTarget)
+                    }}
+                    aria-label={`Збільшити фрагмент книжки: крок ${heroPage + 1}`}
+                  >
+                    <img
+                      key={heroPage}
+                      className={`hero-tablet-page-image hero-page-${heroDirection}`}
+                      src={previews[heroPage]}
+                      alt={`Сторінка практикуму — крок ${heroPage + 1}`}
+                      fetchPriority="high"
+                      width="420"
+                      height="594"
+                    />
+                    <span className="hero-tablet-swipe-hint" aria-hidden="true">
+                      ↔
+                    </span>
+                  </button>
+                  <div
+                    className="hero-tablet-pagination"
+                    role="group"
+                    aria-label="Оберіть сторінку практикуму"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => turnHeroPage(-1)}
+                      aria-label="Попередня сторінка"
+                    >
+                      <ArrowLeft size={14} />
+                    </button>
+                    <div className="hero-tablet-dots">
+                      {previews.map((_, index) => (
+                        <button
+                          type="button"
+                          key={index}
+                          onClick={() => {
+                            setHeroDirection(index > heroPage ? "next" : "previous")
+                            setHeroPage(index)
+                          }}
+                          aria-pressed={heroPage === index}
+                          aria-label={`Фрагмент ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => turnHeroPage(1)}
+                      aria-label="Наступна сторінка"
+                    >
+                      <ArrowRight size={14} />
+                    </button>
+                    <span aria-live="polite">
+                      {heroPage + 1} / {previews.length}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <span className="handwritten hero-tablet-footnote">
+                проведіть пальцем. перегорніть далі.
+              </span>
+              <button
+                className="hero-enlarge pill"
+                onClick={(e) => openPreview(0, e.currentTarget)}
+              >
+                <Plus size={14} />
+                Роздивитися сторінки
+              </button>
+            </div>
+            <div className="paper-sticker">
+              <span>{t("для кого?")}</span>
+              <strong>
+                {t("для вас.")}
+                <br />
+                {t("справжньої.")}
+              </strong>
+              <span className="sticker-heart" aria-hidden="true">
+                ♡
+              </span>
+            </div>
+            <span className="handwritten bottom-caption">
+              {t("маленькі кроки. важливі зміни.")}
+            </span>
+          </div>
+        </section>
+        <div className="facts-strip section-wrap">
+          <span>
+            <strong>5</strong> {t("кроків до самопрезентації")}
+          </span>
+          <span>
+            <strong>48</strong> {t("сторінок для вашої історії")}
+          </span>
+          <span>
+            <BookOpen size={21} strokeWidth={1.3} />{" "}
+            {t("практика у власному темпі")}
+          </span>
+          <span className="handwritten">{t("почніть із себе ♡")}</span>
+        </div>
+        <section
+          className="for-you section-wrap"
+          aria-labelledby="for-you-title"
+        >
+          <div className="section-intro">
+            <span className="handwritten">{t("знайомо, правда?")}</span>
+            <h2 id="for-you-title">
+              {t("про свою справу — багато.")}
+              <br />
+              {t("про себе —")}{" "}
+              <span className="orange-text">{t("ніби вперше.")}</span>
+            </h2>
+            <p>
+              {t(
+                "Ви знаєте, що робите і чим можете допомогти. Та коли звучить «розкажіть про себе», слова раптом губляться."
+              )}
+            </p>
+          </div>
+          <div className="situation-grid">
+            {[
+              {
+                n: "01",
+                title: "На знайомстві",
+                text: "Хочеться розповісти про себе впевнено, а виходить коротке «ну, я займаюся…».",
+              },
+              {
+                n: "02",
+                title: "У розмові з клієнтом",
+                text: "Складно пояснити цінність своєї роботи просто, чітко й без відчуття, що ви себе вихваляєте.",
+              },
+              {
+                n: "03",
+                title: "На новому етапі",
+                text: "Ваша справа змінилася. Хочеться знайти слова, які відображають вас сьогодні.",
+              },
+            ].map((item) => (
+              <article key={item.n}>
+                <span className="situation-number">{item.n}</span>
+                <h3>{t(item.title)}</h3>
+                <p>{t(item.text)}</p>
+              </article>
+            ))}
+          </div>
+          <p className="quiet-note">
+            {t("Не потрібно ставати кимось іншим, щоб бути почутою.")}
+          </p>
+        </section>
+        <section id="inside" className="inside-section">
+          <div className="section-wrap">
+            <div className="inside-heading">
+              <div>
+                <span className="handwritten">
+                  {t("не просто прочитати — спробувати")}
+                </span>
+                <h2>
+                  {t("місце для ваших")}
+                  <br />
+                  {t("слів і відкриттів")}
+                  <span className="orange-text">.</span>
+                </h2>
+              </div>
+              <p>
+                {t(
+                  "«Як створити впевнену самопрезентацію за 5 кроків» — практикум із покроковою роботою, запитаннями до себе й арттерапевтичними вправами."
+                )}
+              </p>
+            </div>
+            <div className="preview-grid">
+              {previews.map((src, index) => (
+                <button
+                  key={src}
+                  className="preview-card"
+                  aria-label={`${t("Збільшити фрагмент книжки: крок")} ${index + 1}`}
+                  onClick={(e) => {
+                    openPreview(index, e.currentTarget)
+                  }}
+                >
+                  <div className="preview-image">
+                    <img
+                      src={src}
+                      alt={`${t("Сторінка практикуму — крок")} ${index + 1}`}
+                      loading="lazy"
+                      width="420"
+                      height="594"
+                    />
+                    <span className="expand-icon">
+                      <Plus size={18} />
+                    </span>
+                  </div>
+                  <span>
+                    {t("Фрагмент")} {String(index + 1).padStart(2, "0")}{" "}
+                    <ArrowRight size={15} />
+                  </span>
+                </button>
+              ))}
+            </div>
+            <div className="inside-bottom">
+              <span className="handwritten">
+                {t("погортайте, перш ніж обрати ↗")}
+              </span>
+              <p>
+                {t(
+                  "Працюйте із текстом самопрезентації, досліджуйте внутрішні бар’єри та знаходьте опору у власному досвіді."
+                )}
+              </p>
+            </div>
+          </div>
+        </section>
+        <section className="tablet-section" aria-labelledby="tablet-title">
+          <div className="tablet-dot-field" aria-hidden="true" />
+          <div className="section-wrap tablet-layout">
+            <div className="tablet-copy">
+              <span className="handwritten">
+                {language === "en"
+                  ? "a little space. just for you."
+                  : "трохи простору. лише для вас."}
+              </span>
+              <h2 id="tablet-title">
+                {language === "en" ? "your pace." : "ваш темп."}
+                <br />
+                {language === "en" ? "your little" : "ваш маленький"}
+                <br />
+                <span className="orange-text">
+                  {language === "en" ? "moment of clarity." : "момент ясності."}
+                </span>
+              </h2>
+              <p>
+                {language === "en"
+                  ? "A quiet morning, a cup of tea, and a few pages for yourself. Open the workbook on your tablet and make room for your own words — wherever you feel at home."
+                  : "Тихий ранок, чашка чаю й кілька сторінок для себе. Відкрийте практикум на планшеті та знайдіть місце для власних слів — там, де вам затишно."}
+              </p>
+              <span className="tablet-format">
+                <Check size={15} />
+                {language === "en"
+                  ? "The same Ukrainian PDF. On your favourite screen."
+                  : "Той самий PDF українською. На зручному для вас екрані."}
+              </span>
+              <a className="pill" href={`${payment}bde00061852d1`}>
+                {t("Отримати PDF за 5 €")}
+                <ArrowRight size={17} />
+              </a>
+            </div>
+            <div className="tablet-showcase">
+              <span className="handwritten tablet-annotation">
+                {language === "en"
+                  ? "a peek at your next chapter ↴"
+                  : "зазирніть у свій наступний крок ↴"}
+              </span>
+              <span className="tablet-spark" aria-hidden="true">
+                ✳
+              </span>
+              <div className="tablet-device">
+                <span className="tablet-camera" aria-hidden="true" />
+                <div className="tablet-screen">
+                  <div className="tablet-app-bar">
+                    <BookOpen size={14} />
+                    <span>
+                      {language === "en" ? "your workbook" : "ваш практикум"}
+                    </span>
+                    <span>PDF</span>
+                  </div>
+                  <button
+                    className="tablet-page"
+                    onClick={(e) => openPreview(tabletPage, e.currentTarget)}
+                    aria-label={`${t("Збільшити фрагмент книжки: крок")} ${tabletPage + 1}`}
+                  >
+                    <img
+                      key={tabletPage}
+                      className="tablet-page-image"
+                      src={previews[tabletPage]}
+                      alt={`${t("Сторінка практикуму — крок")} ${tabletPage + 1}`}
+                      loading="lazy"
+                      width="420"
+                      height="594"
+                    />
+                    <span className="tablet-zoom">
+                      <Plus size={15} />
+                    </span>
+                  </button>
+                  <div
+                    className="tablet-pagination"
+                    role="group"
+                    aria-label={
+                      language === "en"
+                        ? "Choose a sample page"
+                        : "Оберіть сторінку практикуму"
+                    }
+                  >
+                    {previews.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setTabletPage(index)}
+                        aria-pressed={tabletPage === index}
+                        aria-label={`${t("Фрагмент")} ${index + 1}`}
+                      >
+                        {String(index + 1).padStart(2, "0")}
+                      </button>
+                    ))}
+                    <span aria-live="polite">{tabletPage + 1} / 3</span>
+                  </div>
+                </div>
+              </div>
+              <span className="handwritten tablet-footnote">
+                {language === "en"
+                  ? "tap a number. turn a page."
+                  : "торкніться цифри. гортайте далі."}
+              </span>
+            </div>
+          </div>
+        </section>
+        <section id="author" className="author-section section-wrap">
+          <div className="author-portrait">
+            <img
+              src={portrait}
+              alt={t("Анна Воронова, авторка книжки-практикуму")}
+              loading="lazy"
+              width="480"
+              height="560"
+            />
+            <span className="portrait-label handwritten">
+              {t("будемо знайомі, Анна ♡")}
+            </span>
+          </div>
+          <div className="author-copy">
+            <span className="eyebrow">{t("АВТОРКА ПРАКТИКУМУ")}</span>
+            <h2>
+              {t("поруч із вами —")}
+              <br />
+              {t("Анна Воронова")}
+              <span className="orange-text">.</span>
+            </h2>
+            <p>
+              {t(
+                "Підприємниця, арткоуч і терапевтка. Представниця Business Woman у Португалії та експертка зі створення впевненої самопрезентації."
+              )}
+            </p>
+            <p>
+              {t(
+                "Ця книжка виросла з авторського курсу та роботи з жінками, які вчаться говорити про себе й проявлятися у своїй справі. Тут є простір для практики, власного темпу та чесного знайомства із собою."
+              )}
+            </p>
+            <div className="author-stats">
+              <div>
+                <strong>30+</strong>
+                <span>
+                  {t("майстермайндів")}
+                  <br />
+                  {t("із самопрезентації")}
+                </span>
+              </div>
+              <div>
+                <strong>100+</strong>
+                <span>
+                  {t("жінок в індивідуальній")}
+                  <br />
+                  {t("роботі з авторкою")}
+                </span>
+              </div>
+            </div>
+            <a
+              className="text-link"
+              href="https://www.instagram.com/anna_voronova_star/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Camera size={16} /> {t("Познайомитися в Instagram")}{" "}
+              <ArrowRight size={15} />
+            </a>
+          </div>
+        </section>
+        <section id="buy" className="purchase-section section-wrap">
+          <div className="section-intro">
+            <span className="handwritten">
+              {t("ваш наступний маленький крок")}
+            </span>
+            <h2>
+              {t("почніть свою історію")}
+              <span className="orange-text">.</span>
+            </h2>
+            <p>
+              {t("Книжка — завершений практикум для самостійної роботи.")}
+              <br />
+              {t("А якщо хочеться підтримки, можна обрати її додатково.")}
+            </p>
+          </div>
+          <div className="main-offer">
+            <div className="offer-icon">
+              <BookOpen size={39} strokeWidth={1} />
+              <span className="handwritten">{t("для роботи із собою")}</span>
+            </div>
+            <div className="main-offer-copy">
+              <span className="eyebrow">{t("КНИЖКА-ПРАКТИКУМ · PDF")}</span>
+              <h3>
+                {t("ваша самопрезентація")}
+                <br />
+                {t("починається тут.")}
+              </h3>
+              <p>
+                {t(
+                  "48 сторінок українською. П’ять кроків, практичні завдання та арттерапевтичні вправи."
+                )}
+              </p>
+              <span className="small-check">
+                <Check size={15} /> {t("Для самостійної роботи")}
+              </span>
+            </div>
+            <div className="main-offer-action">
+              <span className="price">
+                5 <small>€</small>
+              </span>
+              <span className="one-payment">{t("одноразова оплата")}</span>
+              <a className="pill" href={`${payment}bde00061852d1`}>
+                {t("Купити PDF")}
+                <ArrowRight size={17} />
+              </a>
+              <span className="payment-note">
+                {t("Доступ одразу після оплати")}
+              </span>
+            </div>
+          </div>
+          <div className="support-heading">
+            <h3>{t("хочеться пройти цей шлях разом?")}</h3>
+            <span className="handwritten">{t("оберіть свою підтримку ↴")}</span>
+          </div>
+          <div className="offer-grid">
+            {offers.map((offer) => (
+              <article className="support-offer" key={offer.name}>
+                <span className="eyebrow">{offer.name}</span>
+                <span className="support-price">
+                  {offer.price} <small>€</small>
+                </span>
+                <p className="offer-note">{t(offer.note)}</p>
+                <ul>
+                  {offer.features.map((feature) => (
+                    <li key={t(feature)}>
+                      <Check size={14} />
+                      <span>{t(feature)}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a className="pill" href={`${payment}${offer.link}`}>
+                  <span>{`${t("Обрати")} ${offer.name}`}</span>{" "}
+                  <ArrowRight size={15} />
+                </a>
+              </article>
+            ))}
+          </div>
+          <p className="checkout-note">
+            {t(
+              "Усі пакети оплачуються через WayForPay. PDF входить до кожного пакета."
+            )}
+          </p>
+        </section>
+        <section
+          className="faq-section section-wrap"
+          aria-labelledby="faq-title"
+        >
+          <div>
+            <span className="handwritten">{t("ще кілька відповідей")}</span>
+            <h2 id="faq-title">
+              {t("перед першим")}
+              <br />
+              {t("кроком")}
+              <span className="orange-text">.</span>
+            </h2>
+            <p>
+              {t("Залишилися запитання?")}
+              <br />
+              <a
+                href="https://www.instagram.com/anna_voronova_star/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t("Напишіть Анні в Instagram ↗")}
+              </a>
+            </p>
+          </div>
+          <div className="faq-list">
+            {questions.map((item) => (
+              <FaqItem key={item.q} question={t(item.q)} answer={t(item.a)} />
+            ))}
+          </div>
+        </section>
+        <section className="closing-band">
+          <div className="section-wrap">
+            <span className="handwritten">{t("вам є що сказати.")}</span>
+            <h2>{t("нехай вас почують.")}</h2>
+            <a className="pill" href={`${payment}bde00061852d1`}>
+              {t("Почати з книжки за 5 €")}
+              <ArrowRight size={17} />
+            </a>
+            <span className="closing-note">
+              {t("своїми словами. у своєму темпі.")}
+            </span>
+          </div>
+        </section>
+      </main>
+      <footer className="site-footer section-wrap">
+        <a className="brand" href="#">
+          {t("анна воронова")}
+          <span className="brand-star" aria-hidden="true">
+            ✳
+          </span>
+        </a>
+        <p>{t("книжка-практикум для вашої впевненості")}</p>
+        <div>
+          <a
+            href="https://www.instagram.com/anna_voronova_star/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Instagram ↗
+          </a>
+          <a
+            href="https://t.me/businesswomanportugal"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Telegram ↗
+          </a>
+        </div>
+      </footer>
+      <dialog
+        ref={dialogRef}
+        className="preview-dialog"
+        onCancel={(e) => {
+          e.preventDefault()
+          setPreview(null)
+        }}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setPreview(null)
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowRight") {
+            e.preventDefault()
+            turnPage(1)
+          }
+          if (e.key === "ArrowLeft") {
+            e.preventDefault()
+            turnPage(-1)
+          }
+        }}
+        aria-label={
+          preview !== null
+            ? `${t("Фрагмент книжки — крок")} ${preview + 1}`
+            : t("Фрагмент книжки")
+        }
+      >
+        <button
+          className="dialog-close"
+          onClick={() => setPreview(null)}
+          aria-label={t("Закрити фрагмент")}
+          autoFocus
+        >
+          <X size={22} />
+        </button>
+        {preview !== null && (
+          <div className="gallery-content">
+            <div
+              className="gallery-page"
+              onTouchStart={(e) => {
+                touchStart.current = {
+                  x: e.changedTouches[0].clientX,
+                  y: e.changedTouches[0].clientY,
+                }
+              }}
+              onTouchEnd={(e) => {
+                const start = touchStart.current
+                touchStart.current = null
+                if (!start) return
+                const dx = e.changedTouches[0].clientX - start.x
+                const dy = e.changedTouches[0].clientY - start.y
+                if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5)
+                  turnPage(dx < 0 ? 1 : -1)
+              }}
+            >
+              <img
+                key={preview}
+                className={`gallery-image page-${direction}`}
+                src={previews[preview]}
+                alt={`${t("Збільшена сторінка практикуму — крок")} ${preview + 1}`}
+              />
+            </div>
+            <div className="gallery-controls">
+              <button
+                onClick={() => turnPage(-1)}
+                aria-label={
+                  language === "en" ? "Previous preview" : "Попередній фрагмент"
+                }
+              >
+                <ArrowLeft size={20} />
+              </button>
+              <span role="status" aria-live="polite" aria-atomic="true">
+                {t("Фрагмент")} {preview + 1} / {previews.length}
+              </span>
+              <button
+                onClick={() => turnPage(1)}
+                aria-label={
+                  language === "en" ? "Next preview" : "Наступний фрагмент"
+                }
+              >
+                <ArrowRight size={20} />
+              </button>
+            </div>
+          </div>
+        )}
+      </dialog>
+    </>
   )
 }

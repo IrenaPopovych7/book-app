@@ -1,4 +1,5 @@
 import {
+  useRouteLoaderData,
   Links,
   Meta,
   Outlet,
@@ -9,10 +10,16 @@ import {
 
 import type { Route } from "./+types/root"
 import "./app.css"
+import { getLanguage } from "~/lib/i18n"
+
+export function loader({ request }: { request: Request }) {
+  return { language: getLanguage(request) }
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const data = useRouteLoaderData<typeof loader>("root")
   return (
-    <html lang="en">
+    <html lang={data?.language ?? "uk"}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
