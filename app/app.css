@@ -373,6 +373,41 @@ h1 {
   font-size: 24px;
   color: #9b7c60;
 }
+.outcomes-section {
+  padding-block: 76px 82px;
+}
+.outcomes-intro h2 {
+  max-width: 650px;
+}
+.outcomes-lead {
+  max-width: 620px;
+}
+.outcomes-lead strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.outcomes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px 34px;
+  margin-top: 43px;
+}
+.outcomes-grid article {
+  border-top: 1px solid var(--line);
+  padding-top: 17px;
+}
+.outcome-number {
+  font-family: "Caveat", cursive;
+  font-size: 23px;
+  color: #ce500a;
+}
+.outcomes-grid p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink);
+  margin-top: 10px;
+  max-width: 340px;
+}
 .inside-section {
   background: #f7efe980;
   padding-block: 64px 45px;
@@ -1069,6 +1104,18 @@ h1 {
     text-align: left;
     max-width: 300px;
     margin-top: 28px;
+  }
+  .outcomes-section {
+    padding-block: 55px 58px;
+  }
+  .outcomes-grid {
+    grid-template-columns: 1fr;
+    gap: 21px;
+    margin-top: 30px;
+  }
+  .outcomes-grid p {
+    font-size: 12px;
+    max-width: 100%;
   }
   .inside-section {
     padding-block: 40px 30px;
