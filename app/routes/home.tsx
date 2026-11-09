@@ -8,7 +8,6 @@ import {
   ArrowRight,
   BookOpen,
   Check,
-  Download,
   Camera,
   Plus,
   X,
@@ -265,23 +264,17 @@ export default function Home() {
             </p>
             <div className="hero-actions">
               <a className="pill" href={`${payment}bde00061852d1`}>
-                {t("Отримати PDF за 5 €")}
+                Отримати PDF
                 <ArrowRight size={17} />
               </a>
-              <a className="text-link" href="#inside">
-                {t("Зазирнути всередину")}
+              <a className="text-link hero-inside-link" href="#inside">
+                Зазирнути всередину
                 <ArrowDown size={14} />
               </a>
+              <span className="hero-value">за 5 євро — цінності на 5 🍋</span>
             </div>
-            <p className="delivery-note">
-              <Download size={13} />{" "}
-              {t("48 сторінок · PDF одразу після оплати")}
-            </p>
           </div>
           <div className="hero-visual">
-            <span className="handwritten cover-caption">
-              гортайте свій практикум ↴
-            </span>
             <span className="outline-star" aria-hidden="true">
               ✳
             </span>
@@ -383,16 +376,6 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <span className="handwritten hero-tablet-footnote">
-                проведіть пальцем. перегорніть далі.
-              </span>
-              <button
-                className="hero-enlarge pill"
-                onClick={(e) => openPreview(0, e.currentTarget)}
-              >
-                <Plus size={14} />
-                Роздивитися сторінки
-              </button>
             </div>
             <div className="paper-sticker">
               <span>для тебе, якщо...</span>
@@ -510,21 +493,48 @@ export default function Home() {
           <div className="section-wrap">
             <div className="inside-heading">
               <div>
-                <span className="handwritten">
-                  {t("не просто прочитати — спробувати")}
-                </span>
+                <span className="handwritten">опис книги</span>
                 <h2>
-                  місце для твоїх
+                  48 сторінок
                   <br />
-                  слів і відкриттів
-                  <span className="orange-text">.</span>
+                  <span className="orange-text">реальної практики.</span>
                 </h2>
               </div>
               <p>
-                «Як створити впевнену самопрезентацію за 5 кроків» — це
-                практикум із покроковою роботою, запитаннями до себе й
-                арттерапевтичними вправами.
+                Книга написана на основі курсу та авторського майстермайнду
+                «Впевнена самопрезентація», який пройшли понад 100 учасниць.
+                Тому вона максимально практична й побудована на реальних
+                кейсах.
               </p>
+            </div>
+            <div className="book-description-copy">
+              <div className="book-page-count">
+                <strong>48</strong>
+                <span>сторінок</span>
+              </div>
+              <p className="book-description-lead">
+                Книга складається з трьох частин:
+              </p>
+              <ul className="book-parts">
+                <li>
+                  <span>01</span>
+                  <p>Теорія і практика зі створення самопрезентації.</p>
+                </li>
+                <li>
+                  <span>02</span>
+                  <p>
+                    Три арттерапевтичні практики, які допоможуть пройти
+                    внутрішні страхи й обмеження.
+                  </p>
+                </li>
+                <li>
+                  <span>03</span>
+                  <p>
+                    Живі історії головної героїні, у яких ти точно себе
+                    впізнаєш.
+                  </p>
+                </li>
+              </ul>
             </div>
             <div className="preview-grid">
               {previews.map((src, index) => (
@@ -557,12 +567,11 @@ export default function Home() {
             </div>
             <div className="inside-bottom">
               <span className="handwritten">
-                {t("погортайте, перш ніж обрати ↗")}
+                гортай свій практикум ↗
               </span>
               <p>
-                {t(
-                  "Працюйте із текстом самопрезентації, досліджуйте внутрішні бар’єри та знаходьте опору у власному досвіді."
-                )}
+                Погортай фрагменти, щоб побачити, як виглядає робота
+                всередині.
               </p>
             </div>
           </div>
@@ -571,33 +580,24 @@ export default function Home() {
           <div className="tablet-dot-field" aria-hidden="true" />
           <div className="section-wrap tablet-layout">
             <div className="tablet-copy">
-              <span className="handwritten">
-                {language === "en"
-                  ? "a little space. just for you."
-                  : "трохи простору. лише для вас."}
-              </span>
+              <span className="handwritten">бути поруч — більше, ніж продати</span>
               <h2 id="tablet-title">
-                {language === "en" ? "your pace." : "ваш темп."}
+                Книга є завершеним
                 <br />
-                {language === "en" ? "your little" : "ваш маленький"}
-                <br />
-                <span className="orange-text">
-                  {language === "en" ? "moment of clarity." : "момент ясності."}
-                </span>
+                <span className="orange-text">продуктом.</span>
               </h2>
               <p>
-                {language === "en"
-                  ? "A quiet morning, a cup of tea, and a few pages for yourself. Open the workbook on your tablet and make room for your own words — wherever you feel at home."
-                  : "Тихий ранок, чашка чаю й кілька сторінок для себе. Відкрийте практикум на планшеті та знайдіть місце для власних слів — там, де вам затишно."}
+                Але я хочу створити формат «бути поруч», а не просто продати
+                книгу.
+                <br />
+                Ти можеш придбати книгу, а разом із нею — мою підтримку.
               </p>
               <span className="tablet-format">
                 <Check size={15} />
-                {language === "en"
-                  ? "The same Ukrainian PDF. On your favourite screen."
-                  : "Той самий PDF українською. На зручному для вас екрані."}
+                Обери формат, який тобі найкраще підійде.
               </span>
-              <a className="pill" href={`${payment}bde00061852d1`}>
-                {t("Отримати PDF за 5 €")}
+              <a className="pill" href="#buy">
+                Обрати свій формат
                 <ArrowRight size={17} />
               </a>
             </div>
@@ -732,16 +732,17 @@ export default function Home() {
         <section id="buy" className="purchase-section section-wrap">
           <div className="section-intro">
             <span className="handwritten">
-              {t("ваш наступний маленький крок")}
+              обери свій формат
             </span>
             <h2>
-              {t("почніть свою історію")}
+              Обери свій формат підтримки
               <span className="orange-text">.</span>
             </h2>
             <p>
-              {t("Книжка — завершений практикум для самостійної роботи.")}
+              Книга є завершеним продуктом. Ти можеш придбати її самостійно
+              або разом із моєю підтримкою.
               <br />
-              {t("А якщо хочеться підтримки, можна обрати її додатково.")}
+              Обери формат, який тобі найкраще підійде.
             </p>
           </div>
           <div className="main-offer">
@@ -757,9 +758,7 @@ export default function Home() {
                 {t("починається тут.")}
               </h3>
               <p>
-                {t(
-                  "48 сторінок українською. П’ять кроків, практичні завдання та арттерапевтичні вправи."
-                )}
+                П’ять кроків, практичні завдання та арттерапевтичні вправи.
               </p>
               <span className="small-check">
                 <Check size={15} /> {t("Для самостійної роботи")}
