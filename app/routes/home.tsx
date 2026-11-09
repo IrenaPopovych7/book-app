@@ -536,6 +536,59 @@ export default function Home() {
                 </li>
               </ul>
             </div>
+            <div className="book-reader">
+              <span className="handwritten">гортай свій практикум ↴</span>
+              <div className="tablet-showcase">
+                <div className="tablet-device">
+                  <span className="tablet-camera" aria-hidden="true" />
+                  <div className="tablet-screen">
+                    <div className="tablet-app-bar">
+                      <BookOpen size={14} />
+                      <span>ваш практикум</span>
+                      <span>PDF</span>
+                    </div>
+                    <button
+                      className="tablet-page"
+                      onClick={(e) => openPreview(tabletPage, e.currentTarget)}
+                      aria-label={`Збільшити фрагмент книжки: крок ${tabletPage + 1}`}
+                    >
+                      <img
+                        key={tabletPage}
+                        className="tablet-page-image"
+                        src={previews[tabletPage]}
+                        alt={`Сторінка практикуму — крок ${tabletPage + 1}`}
+                        loading="lazy"
+                        width="420"
+                        height="594"
+                      />
+                      <span className="tablet-zoom">
+                        <Plus size={15} />
+                      </span>
+                    </button>
+                    <div
+                      className="tablet-pagination"
+                      role="group"
+                      aria-label="Оберіть сторінку практикуму"
+                    >
+                      {previews.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setTabletPage(index)}
+                          aria-pressed={tabletPage === index}
+                          aria-label={`Фрагмент ${index + 1}`}
+                        >
+                          {String(index + 1).padStart(2, "0")}
+                        </button>
+                      ))}
+                      <span aria-live="polite">{tabletPage + 1} / 3</span>
+                    </div>
+                  </div>
+                </div>
+                <span className="handwritten tablet-footnote">
+                  торкнися цифри. перегорни далі.
+                </span>
+              </div>
+            </div>
             <div className="preview-grid">
               {previews.map((src, index) => (
                 <button

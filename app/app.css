@@ -568,6 +568,23 @@ h1 {
   max-width: 450px;
   color: var(--muted);
 }
+.book-reader {
+  margin-top: 47px;
+  padding-top: 29px;
+  border-top: 1px solid var(--line);
+}
+.book-reader > .handwritten {
+  display: block;
+  margin-left: 5px;
+  transform: rotate(-3deg);
+}
+.book-reader .tablet-showcase {
+  margin-top: 7px;
+}
+.inside-section .preview-grid,
+.inside-section .inside-bottom {
+  display: none;
+}
 .author-section {
   display: grid;
   grid-template-columns: 1fr 1.15fr;
@@ -1222,6 +1239,13 @@ h1 {
   .book-parts p {
     font-size: 13px;
   }
+  .book-reader {
+    margin-top: 34px;
+    padding-top: 23px;
+  }
+  .book-reader .tablet-showcase {
+    padding-block: 27px 20px;
+  }
   .preview-grid {
     display: flex;
     overflow-x: auto;
@@ -1506,6 +1530,12 @@ h1 {
   * {
     transition: none !important;
   }
+}
+
+/* The hero is a visual invitation; page browsing lives in the book description. */
+.hero-tablet-pagination,
+.hero-tablet-swipe-hint {
+  display: none;
 }
 
 .header-actions {
