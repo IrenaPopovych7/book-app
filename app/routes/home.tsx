@@ -398,9 +398,6 @@ export default function Home() {
             <strong>5</strong> {t("кроків до самопрезентації")}
           </span>
           <span>
-            <strong>48</strong> {t("сторінок для вашої історії")}
-          </span>
-          <span>
             <BookOpen size={21} strokeWidth={1.3} />{" "}
             {t("практика у власному темпі")}
           </span>

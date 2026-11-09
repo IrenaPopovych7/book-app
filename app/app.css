@@ -186,7 +186,7 @@ h1 {
   margin-top: 28px;
 }
 .hero-inside-link {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
 }
 .hero-value {
@@ -373,7 +373,8 @@ h1 {
   margin-block: 10px 12px;
 }
 .situation-grid p {
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 1.7;
   color: var(--muted);
   max-width: 310px;
 }
@@ -1097,7 +1098,7 @@ h1 {
     margin-top: 22px;
   }
   .hero-inside-link {
-    font-size: 12px;
+    font-size: 13px;
   }
   .hero-value {
     font-size: 11px;
@@ -1186,7 +1187,8 @@ h1 {
   .situation-grid p {
     grid-column: 2;
     max-width: 100%;
-    font-size: 12px;
+    font-size: 13px;
+    line-height: 1.7;
   }
   .quiet-note {
     font-size: 20px;
