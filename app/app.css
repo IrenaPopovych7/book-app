@@ -653,14 +653,15 @@ h1 {
 }
 .main-offer {
   margin-top: 34px;
-  border: 1px solid #998674;
+  border: 1px solid #8f7c6b;
   border-radius: 13px;
-  background: #f7efe95c;
+  background: #f7efe9a8;
   padding: 35px;
   display: grid;
   grid-template-columns: 0.65fr 1.5fr 1fr;
   gap: 35px;
   align-items: center;
+  box-shadow: 0 12px 24px #2b1a0708;
 }
 .offer-icon {
   display: flex;
@@ -740,11 +741,13 @@ h1 {
   gap: 22px;
 }
 .support-offer {
-  border: 1px solid var(--line);
+  border: 1px solid #b9aa9b;
   border-radius: 12px;
+  background: #fffdf9;
   padding: 25px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 8px 18px #2b1a0705;
 }
 .support-price {
   font-family: "Lora", serif;

@@ -19,13 +19,14 @@ const portrait = `${assetBase}1718664571385_jpg/source.webp`
 const previews = [1, 2, 3].map(
   (n) => `${assetBase}${encodeURIComponent(`крок ${n}_jpg`)}/source.webp`
 )
-const payment = "https://secure.wayforpay.com/button/"
+const pdfPaymentLink =
+  "https://secure.wayforpay.com/page?vkh=6af5bfd4-1910-4069-9ab5-10f422d1dba8"
 const offers = [
   {
     name: "STANDARD",
     price: 11,
     note: "Читати й відчувати підтримку",
-    link: "bafabfb75b10c",
+    link: "https://secure.wayforpay.com/page?vkh=6aefb862-d468-42ac-8ec9-0ba322d1dba8",
     features: [
       "Книжка у форматі PDF",
       "Закрита група підтримки",
@@ -36,7 +37,7 @@ const offers = [
     name: "PREMIUM",
     price: 31,
     note: "Додати особистий зворотний зв’язок",
-    link: "b4a5157e0632f",
+    link: "https://secure.wayforpay.com/page?vkh=6aefb862-d468-42ac-8ec9-0ba322d1dba8",
     features: [
       "Усе з пакета STANDARD",
       "Одна індивідуальна онлайн-зустріч",
@@ -47,7 +48,7 @@ const offers = [
     name: "VIP",
     price: 51,
     note: "Більше простору для особистої роботи",
-    link: "b89264964793d",
+    link: "https://secure.wayforpay.com/page?vkh=6aefb862-d468-42ac-8ec9-0ba322d1dba8",
     features: [
       "Книжка PDF, група та запитання",
       "Дві індивідуальні зустрічі",
@@ -263,7 +264,7 @@ export default function Home() {
               обрати мають саме тебе.
             </p>
             <div className="hero-actions">
-              <a className="pill" href={`${payment}bde00061852d1`}>
+              <a className="pill" href={pdfPaymentLink}>
                 Отримати PDF
                 <ArrowRight size={17} />
               </a>
@@ -819,7 +820,7 @@ export default function Home() {
                 5 <small>€</small>
               </span>
               <span className="one-payment">{t("одноразова оплата")}</span>
-              <a className="pill" href={`${payment}bde00061852d1`}>
+              <a className="pill" href={pdfPaymentLink}>
                 {t("Купити PDF")}
                 <ArrowRight size={17} />
               </a>
@@ -848,7 +849,7 @@ export default function Home() {
                     </li>
                   ))}
                 </ul>
-                <a className="pill" href={`${payment}${offer.link}`}>
+                <a className="pill" href={offer.link}>
                   <span>{`${t("Обрати")} ${offer.name}`}</span>{" "}
                   <ArrowRight size={15} />
                 </a>
@@ -895,7 +896,7 @@ export default function Home() {
           <div className="section-wrap">
             <span className="handwritten">{t("вам є що сказати.")}</span>
             <h2>{t("нехай вас почують.")}</h2>
-            <a className="pill" href={`${payment}bde00061852d1`}>
+            <a className="pill" href={pdfPaymentLink}>
               {t("Почати з книжки за 5 €")}
               <ArrowRight size={17} />
             </a>
