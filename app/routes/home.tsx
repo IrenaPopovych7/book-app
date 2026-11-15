@@ -20,13 +20,13 @@ const previews = [1, 2, 3].map(
   (n) => `${assetBase}${encodeURIComponent(`крок ${n}_jpg`)}/source.webp`
 )
 const pdfPaymentLink =
-  "https://secure.wayforpay.com/page?vkh=6af5bfd4-1910-4069-9ab5-10f422d1dba8"
+  "https://secure.wayforpay.com/page?vkh=6af9cd55-9498-4686-9d2d-02fc22d1dba8"
 const offers = [
   {
     name: "STANDARD",
     price: 11,
     note: "Читати й відчувати підтримку",
-    link: "https://secure.wayforpay.com/page?vkh=6aefb862-d468-42ac-8ec9-0ba322d1dba8",
+    link: "https://secure.wayforpay.com/page?vkh=6af9cd81-5604-4ec5-af85-059b22d1dba8",
     features: [
       "Книжка у форматі PDF",
       "Закрита група підтримки",
@@ -37,7 +37,7 @@ const offers = [
     name: "PREMIUM",
     price: 31,
     note: "Додати особистий зворотний зв’язок",
-    link: "https://secure.wayforpay.com/page?vkh=6aefb862-d468-42ac-8ec9-0ba322d1dba8",
+    link: "https://secure.wayforpay.com/page?vkh=6af9cdd9-6a74-4b66-b59e-05a622d1dba8",
     features: [
       "Усе з пакета STANDARD",
       "Одна індивідуальна онлайн-зустріч",
@@ -48,7 +48,7 @@ const offers = [
     name: "VIP",
     price: 51,
     note: "Більше простору для особистої роботи",
-    link: "https://secure.wayforpay.com/page?vkh=6aefb862-d468-42ac-8ec9-0ba322d1dba8",
+    link: "https://secure.wayforpay.com/page?vkh=6af9cdf5-49d4-4cdd-98b2-094122d1dba8",
     features: [
       "Книжка PDF, група та запитання",
       "Дві індивідуальні зустрічі",
@@ -916,14 +916,14 @@ export default function Home() {
         <p>{t("книжка-практикум для вашої впевненості")}</p>
         <div>
           <a
-            href="https://www.instagram.com/anna_voronova_star/"
+            href="https://www.instagram.com/selfpresentation_book?dlrf=MWQ3ejYzMzhsYW5rOQ%3D%3D&utm_source=qr"
             target="_blank"
             rel="noopener noreferrer"
           >
             Instagram ↗
           </a>
           <a
-            href="https://t.me/businesswomanportugal"
+            href="https://t.me/annavoronovastar"
             target="_blank"
             rel="noopener noreferrer"
           >
