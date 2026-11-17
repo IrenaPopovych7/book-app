@@ -20,7 +20,7 @@ const previews = [1, 2, 3].map(
   (n) => `${assetBase}${encodeURIComponent(`крок ${n}_jpg`)}/source.webp`
 )
 const pdfPaymentLink =
-  "https://secure.wayforpay.com/page?vkh=6afc5f5c-1d80-4b5e-b955-0c1922d1dba8"
+  "https://secure.wayforpay.com/button/bde00061852d1"
 const offers = [
   {
     name: "STANDARD",
@@ -35,7 +35,7 @@ const offers = [
   },
   {
     name: "PREMIUM",
-    price: 31,
+    price: 30,
     note: "Додати особистий зворотний зв’язок",
     link: "https://secure.wayforpay.com/button/b4a5157e0632f",
     features: [
