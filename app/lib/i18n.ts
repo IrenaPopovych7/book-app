@@ -12,6 +12,7 @@ const english: Record<string, string> = {
   "Основна навігація": "Main navigation",
   "Про книжку": "The workbook",
   "Про авторку": "The author",
+  "Відгуки": "Reviews",
   "Отримати книжку": "Get the workbook",
   "КНИЖКА-ПРАКТИКУМ · УКРАЇНСЬКОЮ": "A PRACTICAL WORKBOOK · IN UKRAINIAN",
   "ваша історія.": "your story.",

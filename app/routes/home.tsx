@@ -21,6 +21,30 @@ const previews = [1, 2, 3].map(
 )
 const pdfPaymentLink =
   "https://secure.wayforpay.com/button/bde00061852d1"
+const reviewSource = "https://www.instagram.com/p/DVJJ0n1iHwt/"
+const courseReviews = [
+  {
+    name: "Наталя Чорна",
+    role: "Тренер і наставник з перманенту",
+    quote: "Я проходила курс «Впевнена самопрезентація», який є основою цієї книжки. Дякую! Завдяки курсу я відкрила власні лідерські якості.",
+  },
+  {
+    name: "Олександра К.",
+    role: "Майстриня перманентного макіяжу, Португалія",
+    quote: "Я не знала, як адаптуватися в чужій країні, і чи мої навички та досвід будуть потрібні. На щастя, я познайомилась з Анною і прийшла на її курс із самопрезентації.",
+  },
+  {
+    name: "Олена",
+    role: "Чемпіонка Британії з Pole Dance and Fitness, 2022",
+    quote: "Я брала участь у курсі самопрезентації і спершу була скептично налаштована. Але виявилося, що я гадки не мала, що таке «самопрезентація» та наскільки важливою є ця навичка!",
+  },
+  {
+    name: "Тетяна Замислова",
+    role: "Директорка з розвитку бізнесу «СБ Малакут», цифрова психологиня",
+    quote: "Я проходила курс «Впевнена самопрезентація» у знаковий момент: після початку повномасштабної війни й переїзду в Португалію. Курс Анни став величезною підтримкою. Всім щиро рекомендую книжку для ознайомлення та користування!",
+  },
+]
+
 const offers = [
   {
     name: "STANDARD",
@@ -238,6 +262,7 @@ export default function Home() {
         <nav aria-label={t("Основна навігація")}>
           <a href="#inside">{t("Про книжку")}</a>
           <a href="#author">{t("Про авторку")}</a>
+          <a href="#reviews">{t("Відгуки")}</a>
         </nav>
         <div className="header-actions">
           <a className="pill header-cta" href="#buy">
@@ -779,6 +804,35 @@ export default function Home() {
               <ArrowRight size={15} />
             </a>
           </div>
+        </section>
+        <section
+          id="reviews"
+          className="reviews-section section-wrap"
+          aria-labelledby="reviews-title"
+        >
+          <div className="section-intro">
+            <h2 id="reviews-title">
+              Відгуки учасниць курсу<span className="orange-text">.</span>
+            </h2>
+            <p>З курсу «Впевнена самопрезентація» виросла ця книжка-практикум.</p>
+          </div>
+          <div className="reviews-grid">
+            {courseReviews.map(({ name, role, quote }) => (
+              <figure key={name} className="review-card">
+                <span className="review-mark" aria-hidden="true">“</span>
+                <blockquote cite={reviewSource}>
+                  <p>{quote}</p>
+                </blockquote>
+                <figcaption>
+                  <strong>{name}</strong>
+                  <span>{role}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <a className="text-link reviews-source" href={reviewSource}>
+            Відгуки в Instagram <ArrowRight size={15} aria-hidden="true" />
+          </a>
         </section>
         <section id="buy" className="purchase-section section-wrap">
           <div className="section-intro">
