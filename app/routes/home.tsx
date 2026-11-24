@@ -16,35 +16,38 @@ import {
 const assetBase =
   "https://cdn.wdgtsrc.com/408ca0ccc19412119d2bbc6f7b83f91e8400634/resize_landing/"
 const portrait = `${assetBase}1718664571385_jpg/source.webp`
+const bookCover = "/book-cover.jpg"
 const previews = [1, 2, 3].map(
   (n) => `${assetBase}${encodeURIComponent(`крок ${n}_jpg`)}/source.webp`
 )
-const pdfPaymentLink =
-  "https://secure.wayforpay.com/button/bde00061852d1"
+const pdfPaymentLink = "https://secure.wayforpay.com/button/bde00061852d1"
 const reviewSource = "https://www.instagram.com/p/DVJJ0n1iHwt/"
 const courseReviews = [
   {
     name: "Наталя Чорна",
     role: "Тренер і наставник з перманенту",
-    quote: "Я проходила курс «Впевнена самопрезентація», який є основою цієї книжки. Дякую! Завдяки курсу я відкрила власні лідерські якості.",
+    quote:
+      "Я проходила курс «Впевнена самопрезентація», який є основою цієї книжки. Дякую! Завдяки курсу я відкрила власні лідерські якості.",
   },
   {
     name: "Олександра К.",
     role: "Майстриня перманентного макіяжу, Португалія",
-    quote: "Я не знала, як адаптуватися в чужій країні, і чи мої навички та досвід будуть потрібні. На щастя, я познайомилась з Анною і прийшла на її курс із самопрезентації.",
+    quote:
+      "Я не знала, як адаптуватися в чужій країні, і чи мої навички та досвід будуть потрібні. На щастя, я познайомилась з Анною і прийшла на її курс із самопрезентації.",
   },
   {
     name: "Олена",
     role: "Чемпіонка Британії з Pole Dance and Fitness, 2022",
-    quote: "Я брала участь у курсі самопрезентації і спершу була скептично налаштована. Але виявилося, що я гадки не мала, що таке «самопрезентація» та наскільки важливою є ця навичка!",
+    quote:
+      "Я брала участь у курсі самопрезентації і спершу була скептично налаштована. Але виявилося, що я гадки не мала, що таке «самопрезентація» та наскільки важливою є ця навичка!",
   },
   {
     name: "Тетяна Замислова",
     role: "Директорка з розвитку бізнесу «СБ Малакут», цифрова психологиня",
-    quote: "Я проходила курс «Впевнена самопрезентація» у знаковий момент: після початку повномасштабної війни й переїзду в Португалію. Курс Анни став величезною підтримкою. Всім щиро рекомендую книжку для ознайомлення та користування!",
+    quote:
+      "Я проходила курс «Впевнена самопрезентація» у знаковий момент: після початку повномасштабної війни й переїзду в Португалію. Курс Анни став величезною підтримкою. Всім щиро рекомендую книжку для ознайомлення та користування!",
   },
 ]
-
 const offers = [
   {
     name: "STANDARD",
@@ -59,7 +62,7 @@ const offers = [
   },
   {
     name: "PREMIUM",
-    price: 30,
+    price: 31,
     note: "Додати особистий зворотний зв’язок",
     link: "https://secure.wayforpay.com/button/b4a5157e0632f",
     features: [
@@ -184,7 +187,7 @@ export default function Home() {
   useEffect(() => {
     const media = window.matchMedia("(prefers-reduced-motion: reduce)")
     const elements = mainRef.current?.querySelectorAll(
-      ".section-intro, .situation-grid article, .inside-heading, .preview-card, .author-portrait, .author-copy, .main-offer, .support-heading, .support-offer, .faq-section, .tablet-copy, .tablet-showcase, .closing-band .section-wrap"
+      ".section-intro, .situation-grid article, .inside-heading, .preview-card, .author-portrait, .author-copy, .main-offer, .support-heading, .support-offer, .faq-section, .tablet-copy, .tablet-showcase, .review-card, .closing-band .section-wrap"
     )
     if (!elements || !("IntersectionObserver" in window)) return
     const observer = new IntersectionObserver(
@@ -207,7 +210,7 @@ export default function Home() {
           element.classList.add("scroll-reveal")
           if (
             element.matches(
-              ".preview-card, .support-offer, .situation-grid article"
+              ".preview-card, .support-offer, .situation-grid article, .review-card"
             )
           ) {
             ;(element as HTMLElement).style.setProperty(
@@ -285,8 +288,8 @@ export default function Home() {
               </span>
             </h1>
             <p className="hero-description">
-              Навколо багато облич та голосів, але почути, запам’ятати й
-              обрати мають саме тебе.
+              Навколо багато облич та голосів, але почути, запам’ятати й обрати
+              мають саме тебе.
             </p>
             <div className="hero-actions">
               <a className="pill" href={pdfPaymentLink}>
@@ -301,6 +304,20 @@ export default function Home() {
             </div>
           </div>
           <div className="hero-visual">
+            <figure className="hero-cover-card">
+              <img
+                src={bookCover}
+                alt={t(
+                  "Обкладинка книжки Анни Воронової «Як створити впевнену самопрезентацію за 5 кроків»"
+                )}
+                width="500"
+                height="568"
+                fetchPriority="high"
+              />
+              <figcaption className="handwritten">
+                обкладинка книги ↘
+              </figcaption>
+            </figure>
             <span className="outline-star" aria-hidden="true">
               ✳
             </span>
@@ -381,7 +398,9 @@ export default function Home() {
                           type="button"
                           key={index}
                           onClick={() => {
-                            setHeroDirection(index > heroPage ? "next" : "previous")
+                            setHeroDirection(
+                              index > heroPage ? "next" : "previous"
+                            )
                             setHeroPage(index)
                           }}
                           aria-pressed={heroPage === index}
@@ -404,60 +423,42 @@ export default function Home() {
               </div>
             </div>
             <div className="paper-sticker">
-              <span>для тебе, якщо...</span>
+              <span>твоя наступна сторінка</span>
               <strong>
-                хочеш говорити
+                твоя впевнена
                 <br />
-                впевнено.
+                самопрезентація.
               </strong>
               <span className="sticker-heart" aria-hidden="true">
                 ♡
               </span>
             </div>
-            <span className="handwritten bottom-caption">
-              {t("маленькі кроки. важливі зміни.")}
-            </span>
           </div>
         </section>
-        <div className="facts-strip section-wrap">
-          <span>
-            <strong>5</strong> {t("кроків до самопрезентації")}
-          </span>
-          <span>
-            <BookOpen size={21} strokeWidth={1.3} />{" "}
-            {t("практика у власному темпі")}
-          </span>
-          <span className="handwritten">{t("почніть із себе ♡")}</span>
-        </div>
         <section
           className="for-you section-wrap"
           aria-labelledby="for-you-title"
         >
           <div className="section-intro">
-            <span className="handwritten">впізнаєш себе?</span>
             <h2 id="for-you-title">
               ЦЯ КНИГА ДЛЯ ТЕБЕ, <span className="orange-text">ЯКЩО ТИ:</span>
             </h2>
-            <p>
-              Ти можеш бути на різному етапі, але спільне одне: хочеться
-              говорити про себе впевнено, зрозуміло й по-своєму.
-            </p>
           </div>
           <div className="situation-grid">
             {[
               {
                 n: "01",
-                title: "Ти змінила напрям діяльності або почала нову справу",
+                title: "Змінила напрям діяльності або почала нову справу",
                 text: "Тобі досі незручно розповідати про себе й свої послуги або ти просто не знаєш, як робити це впевнено.",
               },
               {
                 n: "02",
-                title: "Ти практикуюча експертка",
+                title: "Практикуюча експертка",
                 text: "Ти знаєш, що маєш досвід і знання, але не завжди можеш передати свою цінність словами так, щоб люди зрозуміли, чому варто обрати саме тебе.",
               },
               {
                 n: "03",
-                title: "Ти працюєш у кількох напрямках",
+                title: "Працюєш у кількох напрямках",
                 text: "Ти хочеш об’єднати їх у зрозумілу самопрезентацію — без перевантаження зайвою інформацією та з фокусом на потребах своєї аудиторії.",
               },
               {
@@ -467,7 +468,7 @@ export default function Home() {
               },
               {
                 n: "05",
-                title: "Тобі бракує впевненості",
+                title: "Бракує впевненості",
                 text: "Внутрішня критика, страх оцінювання чи хвилювання заважають говорити вільно, проявляти експертність і бути помітною.",
               },
             ].map((item) => (
@@ -487,23 +488,17 @@ export default function Home() {
           aria-labelledby="outcomes-title"
         >
           <div className="section-intro outcomes-intro">
-            <span className="handwritten">крок за кроком</span>
             <h2 id="outcomes-title">
               Книга <span className="orange-text">допоможе тобі:</span>
             </h2>
-            <p className="outcomes-lead">
-              <strong>Це не просто PDF-книга, яку ти прочитаєш і відкладеш.</strong>
-              <br />
-              Це покроковий шлях, у якому ти:
-            </p>
           </div>
           <div className="outcomes-grid">
             {[
-              "наведеш лад у думках",
-              "створиш власну самопрезентацію за чіткою структурою з п’яти кроків",
-              "отримаєш конкретні формули, які допоможуть говорити про себе зрозуміло, чітко й без розмитих формулювань",
-              "зрозумієш, у чому твоя унікальність і чим ти відрізняєшся від інших",
-              "донесеш свою цінність так, щоб за перші секунди привернути увагу й залишитися в пам’яті",
+              "навести лад у думках",
+              "створити власну самопрезентацію за чіткою структурою з п’яти кроків",
+              "отримати конкретні формули, які допоможуть говорити про себе зрозуміло, чітко й без розмитих формулювань",
+              "зрозуміти, у чому твоя унікальність і чим ти відрізняєшся від інших",
+              "донести свою цінність так, щоб за перші секунди привернути увагу й залишитися в пам’яті",
             ].map((outcome, index) => (
               <article key={outcome}>
                 <span className="outcome-number">0{index + 1}</span>
@@ -516,27 +511,19 @@ export default function Home() {
           <div className="section-wrap">
             <div className="inside-heading">
               <div>
-                <span className="handwritten">опис книги</span>
-                <h2>
-                  48 сторінок
-                  <br />
-                  <span className="orange-text">реальної практики.</span>
-                </h2>
+                <span className="handwritten book-description-kicker">
+                  ОПИС КНИГИ
+                </span>
               </div>
               <p>
                 Книга написана на основі курсу та авторського майстермайнду
                 «Впевнена самопрезентація», який пройшли понад 100 учасниць.
-                Тому вона максимально практична й побудована на реальних
-                кейсах.
+                Тому вона максимально практична й побудована на реальних кейсах.
               </p>
             </div>
             <div className="book-description-copy">
-              <div className="book-page-count">
-                <strong>48</strong>
-                <span>сторінок</span>
-              </div>
               <p className="book-description-lead">
-                Книга складається з трьох частин:
+                <strong>З чого складається книга:</strong>
               </p>
               <ul className="book-parts">
                 <li>
@@ -558,6 +545,7 @@ export default function Home() {
                   </p>
                 </li>
               </ul>
+              <p className="book-page-note">48 сторінок · українською мовою.</p>
             </div>
             <div className="book-reader">
               <span className="handwritten">гортай свій практикум ↴</span>
@@ -641,22 +629,15 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            <div className="inside-bottom">
-              <span className="handwritten">
-                гортай свій практикум ↗
-              </span>
-              <p>
-                Погортай фрагменти, щоб побачити, як виглядає робота
-                всередині.
-              </p>
-            </div>
           </div>
         </section>
         <section className="tablet-section" aria-labelledby="tablet-title">
           <div className="tablet-dot-field" aria-hidden="true" />
           <div className="section-wrap tablet-layout">
             <div className="tablet-copy">
-              <span className="handwritten">бути поруч — більше, ніж продати</span>
+              <span className="handwritten">
+                бути поруч — більше, ніж продати
+              </span>
               <h2 id="tablet-title">
                 Книга є завершеним
                 <br />
@@ -814,12 +795,16 @@ export default function Home() {
             <h2 id="reviews-title">
               Відгуки учасниць курсу<span className="orange-text">.</span>
             </h2>
-            <p>З курсу «Впевнена самопрезентація» виросла ця книжка-практикум.</p>
+            <p>
+              З курсу «Впевнена самопрезентація» виросла ця книжка-практикум.
+            </p>
           </div>
           <div className="reviews-grid">
             {courseReviews.map(({ name, role, quote }) => (
               <figure key={name} className="review-card">
-                <span className="review-mark" aria-hidden="true">“</span>
+                <span className="review-mark" aria-hidden="true">
+                  “
+                </span>
                 <blockquote cite={reviewSource}>
                   <p>{quote}</p>
                 </blockquote>
@@ -836,16 +821,14 @@ export default function Home() {
         </section>
         <section id="buy" className="purchase-section section-wrap">
           <div className="section-intro">
-            <span className="handwritten">
-              обери свій формат
-            </span>
+            <span className="handwritten">обери свій формат</span>
             <h2>
               Обери свій формат підтримки
               <span className="orange-text">.</span>
             </h2>
             <p>
-              Книга є завершеним продуктом. Ти можеш придбати її самостійно
-              або разом із моєю підтримкою.
+              Книга є завершеним продуктом. Ти можеш придбати її самостійно або
+              разом із моєю підтримкою.
               <br />
               Обери формат, який тобі найкраще підійде.
             </p>
@@ -862,9 +845,7 @@ export default function Home() {
                 <br />
                 {t("починається тут.")}
               </h3>
-              <p>
-                П’ять кроків, практичні завдання та арттерапевтичні вправи.
-              </p>
+              <p>П’ять кроків, практичні завдання та арттерапевтичні вправи.</p>
               <span className="small-check">
                 <Check size={15} /> {t("Для самостійної роботи")}
               </span>
@@ -946,19 +927,6 @@ export default function Home() {
             ))}
           </div>
         </section>
-        <section className="closing-band">
-          <div className="section-wrap">
-            <span className="handwritten">{t("вам є що сказати.")}</span>
-            <h2>{t("нехай вас почують.")}</h2>
-            <a className="pill" href={pdfPaymentLink}>
-              {t("Почати з книжки за 5 €")}
-              <ArrowRight size={17} />
-            </a>
-            <span className="closing-note">
-              {t("своїми словами. у своєму темпі.")}
-            </span>
-          </div>
-        </section>
       </main>
       <footer className="site-footer section-wrap">
         <a className="brand" href="#">
@@ -984,6 +952,16 @@ export default function Home() {
             Telegram ↗
           </a>
         </div>
+        <a
+          className="studio-credit"
+          href="https://yavorovsky-studio.vercel.app/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Сайт студії Яворовські"
+        >
+          <img src="/studio-logo.png" alt="" width="42" height="42" />
+          <span>Студія Яворовські ↗</span>
+        </a>
       </footer>
       <dialog
         ref={dialogRef}
